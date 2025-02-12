@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Média</title>
+    <script>
+       function Calcular_Media(){
+            let n1 = parseFloat(document.getElementById("inota1").value);
+            let n2 = parseFloat(document.getElementById("inota2").value);
+            let media = (n1+n2)/2;
+            document.getElementById("imedia").setAttribute("value", media);
+       }
+
+    </script>
+</head>
+<body>
+    <h1>Calcular Média</h1>
+    <form action="" method="get">
+
+        <p><label for="inota1">Nota 1: </label><input type="number" name="nota 1" id="inota1"></p>
+        <p><label for="inota2">Nota 2: </label><input type="number" name="nota 2" id="inota2"></p>
+
+        <p><input type="button" value="Calcular" onclick="Calcular_Media()"></p>
+        <p><label for="imedia">Média: </label><input type="number" name="media" id="imedia" readonly></p>
+    </form>
+</body>
+</html>

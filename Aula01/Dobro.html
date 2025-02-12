@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 01 - Revisão - Dobro</title>
+    <script>
+        function Calcular_dobro(){
+            let numero = parseInt(document.getElementById("inumero").value);
+            let dobro = numero * 2;
+            document.getElementById("dobro").setAttribute("value", dobro);
+        }
+    </script>
+</head>
+<body>
+    <h1>Calculo do Dobro</h1>
+    <form action="" method="get">
+
+        <p><label for="">Número</label> <input type="number" name="numero" id="inumero" autofocus></p>
+        <p>
+            <input type="button" value="Calcular" onclick="Calcular_dobro()">
+            <input type="number" name="dobro" id="dobro" readonly>
+        </p>
+    </form>
+</body>
+</html>
