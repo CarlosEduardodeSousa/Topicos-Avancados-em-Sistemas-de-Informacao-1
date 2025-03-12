@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+</head>
+<body>
+    <label for="valores">Valores</label>
+    <input type="text" id="valores"> <br> <br>
+    <button onclick="Calcular()">Calcular</button> <br> <br>
+    <p>Soma: <span id="soma"></span></p>
+    <p>Media: <span id="media"></span></p>
+
+    <script>
+        async function calcular(){
+            const valores = document.getElementById('valores').value;
+            const numeros = valores.split(',').map(Number);
+
+            const response = await fetch('http://localhost:3000/calcular',{
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({numeros})
+            });
+            const data = await response.json();
+
+            document.getElementById('soma').textContent = data.soma;
+            document.getElementById('media').textContent = data.media;
+        }
+    </script>
+</body>
+</html>
