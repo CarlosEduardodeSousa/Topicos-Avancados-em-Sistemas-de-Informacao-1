@@ -19,7 +19,7 @@ function calcular(req, res){
         soma += valores[i];
     }
 
-    let media = soam / valores.length;
+    let media = soma / valores.length;
     res.json({soma:soma , media:media});
 }
 
