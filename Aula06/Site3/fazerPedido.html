@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fazer Pedido</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+      
+        h1 {
+            margin-top: 20px;
+        }
+      
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+      
+        label {
+            margin-top: 10px;
+            display: block;
+        }
+      
+        input {
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+        }
+      
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+      
+        button:hover {
+            background-color: #218838;
+        }
+      
+        div {
+            margin-bottom: 10px;
+            color: red;
+        }
+    </style>
+
+    <script>
+        async function fazerPedido(){
+            const item = document.getElementById('item').value;
+            const quantidade = parseInt(document.getElementById('quantidade').value);
+            const mensagemDiv = document.getElementById('mensagem');
+
+            const response = await fetch('http://localhost:3000/pedido', {
+                method: 'POST',
+                headers:{
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({item, quantidade})
+
+            });
+
+            const data = await response.json();
+            mensagemDiv.textContent = data.mensagem;
+            if(response.ok){
+                document.getElementById('item').value = '';
+                document.getElementById('quantidade').value = '';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Fazer Pedido</h1>
+    <form>
+        <label for="item">Item:</label>
+        <input type="text" id="item" name="item"> <br><br>
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" id="quantidade" name="quantidade"> <br><br>
+        <button type="button" onclick="fazerPedido()">Adicionar ao Pedido</button>
+        <br>
+    </form>
+    <div id="mensagem"></div>
+    <button onclick="window.location.href='cliente.html'">Voltar</button>
+</body>
+</html>
