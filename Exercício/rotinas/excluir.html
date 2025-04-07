@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excluit Item</title>
+    <script>
+        function excluirItem(event) {
+      event.preventDefault();
+      const nome = document.getElementById('item').value;
+
+      let lista = JSON.parse(localStorage.getItem('listaCompras') || '[]');
+      lista = lista.filter(i => i.item !== nome);
+      localStorage.setItem('listaCompras', JSON.stringify(lista));
+
+      alert('Item excluído (se existia).');
+    }
+    </script>
+
+    <style>
+        a{
+            background-color: black;
+            color: white;
+            padding: 2px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Excluir Item</h1>
+    <form onsubmit="excluirItem(event)" autocomplete="off">
+        <label for="item">Nome do Item:</label>
+        <input type="text" name="item" id="item">
+        <button type="submit">Excluir</button>
+    </form>
+
+    <a href="..//index.html">Voltar para a pagina principal</a>
+</body>
+</html>

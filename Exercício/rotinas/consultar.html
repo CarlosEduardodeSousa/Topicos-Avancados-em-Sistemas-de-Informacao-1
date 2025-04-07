@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Item</title>
+    <script>
+        function consultarItem(event) {
+      event.preventDefault();
+      const nome = document.getElementById('consulta').value;
+      const lista = JSON.parse(localStorage.getItem('listaCompras') || '[]');
+      const item = lista.find(i => i.item === nome);
+      const resultado = document.getElementById('resultado');
+
+      if (item) {
+        resultado.textContent = `Item encontrado: ${item.item} - ${item.quantidade}`;
+      } else {
+        resultado.textContent = 'Item não encontrado.';
+      }
+    }
+    </script>
+
+    <style>
+        a{
+            background-color: black;
+            color: white;
+            padding: 2px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Consultar Item</h1>
+    <form onsubmit="consultarItem(event)" autocomplete="off">
+        <label for="consulta">Nome do Item:</label>
+        <input type="text" id="consulta" name="consulta">
+        <button type="submit">Consultar</button>
+    </form>
+    <p id="resultado"></p>
+
+    <a href="..//index.html">Voltar para a pagina principal</a>
+</body>
+</html>

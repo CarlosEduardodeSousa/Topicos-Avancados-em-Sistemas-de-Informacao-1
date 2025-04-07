@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Itens</title>
+    <script>
+        function atualizarLista(){
+            const lista = JSON.parse(localStorage.getItem('listaCompras') || '[]');
+            const listaDiv = document.getElementById('lista');
+            listaDiv.innerHTML = '<ul>' + lista.map(i => `<li>${i.item} - ${i.quantidade}</li>`).join('') + '</ul>';
+        }
+        setInterval(atualizarLista, 15000);
+        window.onload = atualizarLista;
+    </script>
+
+    <style>
+        a{
+            background-color: black;
+            color: white;
+            padding: 2px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Itens</h1>
+    <div id="lista"></div>
+
+    <a href="..//index.html">Voltar para a pagina principal</a>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incluir Item</title>
+    <script>
+        function incluirItem(event){
+            event.preventDefault();
+            const item = document.getElementById('item').value;
+            const quantidade = document.getElementById('quantidade').value;
+
+            if(!item || !quantidade){
+                return alert('Preencha todos os campos.')
+            }
+
+            const lista = JSON.parse(localStorage.getItem('listaCompras') || '[]');
+            lista.push({item, quantidade});
+            localStorage.setItem('listaCompras', JSON.stringify(lista));
+
+            alert('Item incluído com sucesso!');
+            event.target.reset();
+        }
+    </script>
+
+    <style>
+        a{
+            background-color: black;
+            color: white;
+            padding: 2px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Incluir Item</h1>
+    <form onsubmit="incluirItem(event)" autocomplete="off">
+        <label for="item">Nome do item:</label>
+        <input type="text" name="item" id="item"><br>
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" name="quantidade" id="quantidade"><br>
+        <button type="submit">Incluir</button>
+    </form>
+
+    <a href="..//index.html">Voltar para a pagina principal</a>
+</body>
+</html>
