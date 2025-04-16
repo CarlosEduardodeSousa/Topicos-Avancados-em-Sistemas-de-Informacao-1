@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente de Pedidos</title>
+    <style>
+        body{
+            font-family: sans-serif;
+        }
+
+        form{
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gerenciador de Pedidos</h1>
+
+    <h2>Adicionar Item</h2>
+    <form id="adicionarForm">
+        <label for="item">Item:</label>
+        <input type="text" name="item" id="item" required> <br><br>
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" name="quantidade" id="quantidade" required> <br><br>
+        <button type="submit">Adicionar</button>
+    </form>
+
+    <h2>Listar Pedido</h2>
+    <button id="listarButton">Listar Pedido</button>
+    <ul id="pedidoLista"></ul>
+
+    <h2>Excluir Item</h2>
+    <form id="excluirForm">
+        <label for="excluirIndex">Índice do Item:</label>
+        <input type="number" name="excluirIndex" id="excluirIndex" required> <br><br>
+        <button type="submit">Excluir</button>
+    </form>
+
+    <h2>Alterar Item</h2>
+    <form id="alterarForm">
+        <label for="alterarIndex">Índice do Item:</label>
+        <input type="number" name="alterarIndex" id="alterarIndex" required> <br><br>
+        <label for="novoItem">Novo Item:</label>
+        <input type="text" name="novoItem" id="novoItem" required> <br><br>
+        <label for="novaQuantidade">Nova Quantidade:</label>
+        <input type="number" name="novaQuantidade" id="novaQuantidade" required> <br><br>
+        <button type="submit">Alterar</button>
+    </form>
+
+    <script>
+        const API_URL = 'http://localhost:3000/pedido'; // Substitua pela URL da sua API
+
+        // Adicionar Item
+        document.getElementById('adicionarForm').addEventListener('submit', function(event){
+            event.preventDefault();
+            const item = document.getElementById('item').value;
+            const quantidade = document.getElementById('quantidade').value;
+
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ item, quantidade})
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.mensagem);
+                document.getElementById('adicionarForm').reset();
+            });
+        });
+
+        //Listar Pedido
+        document.getElementById('listarButton').addEventListener('click', function(){
+            fetch(API_URL)
+            .then(response => response.json())
+            .then(data => {
+                const pedidoLista = document.getElementById('pedidoLista');
+                pedidoLista.innerHTML = ''; // Limpa a lista antes do adcionar novos itens
+                if(data.mensagem){
+                    pedidoLista.innerHTML = `<li>${data.mensagem}</li>`;
+                } else{
+                    data.forEach(( item, index) => {
+                        pedidoLista.innerHTML += `<li>${item.item} - Quantidade: ${item.quantidade} (Índice: ${index}</li>)`;
+                    });
+                }
+            });
+        });
+
+        // Excluir item
+        document.getElementById('excluirForm').addEventListener('submit', function(event){
+            event.preventDefault();
+            const index = document.getElementById('excluirIndex').value;
+
+            fetch(`${API_URL}/${index}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data =>{
+                alert(data.mensagem);
+                document.getElementById('excluirForm').reset();
+            });
+        });
+
+        // Alterar Item
+        document.getElementById('alterarForm').addEventListener('submit', function(event){
+            event.preventDefault();
+            const index = document.getElementById('alterarIndex').value;
+            const novoItem = document.getElementById('novoItem').value;
+            const novaQuantidade = document.getElementById('novaQuantidade').value;
+
+            fetch(`${API_URL}/${index}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ item: novoItem, quantidade: novaQuantidade})
+            })
+            .then(response => response.json())
+            .then(data =>{
+                alert(data.mensagem);
+                document.getElementById('alterarForm').reset();
+            });
+        });
+    </script>
+</body>
+</html>
+
