@@ -1,0 +1,74 @@
+@charset "UTF-8";
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0px;
+    padding: 0px;
+    background-color: #fdf6f0;
+    color: #333;
+}
+
+header{
+    background-color: #d35400;
+    color: white;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input#search{
+    padding: 0.5em;
+    font-size: 1em;
+    border-radius: 5px;
+    border: none;
+}
+
+main{
+    display: flex;
+    gap: 2em;
+    padding: 2em;
+}
+
+section.grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2em;
+    flex: 2;
+}
+
+.pizza-card button{
+    margin-top: 0.5em;
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+aside#carrinho{
+    flex: 1px;
+    background-color: #fff;
+    padding: 1em;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+aside#carrinho h2{
+    margin-top: 0px;
+}
+
+ul#itens-carrinho li{
+    margin-bottom: 0.5em;
+}
+
+button#finalizarPedido{
+    margin-top: 1em;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    cursor: pointer;
+}

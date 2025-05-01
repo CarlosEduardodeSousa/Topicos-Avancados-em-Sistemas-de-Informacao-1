@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizzaria Online</title>
+    <link rel="stylesheet" href="estilo/style.css">
+</head>
+<body>
+    <header>
+        <h1>Catálogo de Pizzas</h1>
+        <input type="text" id="search" placeholder="Buscar Pizza...">
+    </header>
+
+    <main>
+        <section id="catalogo" class="grid"></section>
+
+        <aside id="carrinho">
+            <h2>Carrinho</h2>
+            <ul id="itens-carrinho"></ul>
+            <p>Total: R$ <span id="total">0.00</span></p>
+            <label>Forma de Pagamento:
+                <select id="formaPagamento">
+                    <option value="dinheiro">Dinheiro</option>
+                    <option value="cartao">Cartão</option>
+                </select>
+            </label>
+            <button id="finalizarPedido">Finalizar Pedido</button>
+        </aside>
+    </main>
+
+    <script>
+        const API_BASE = 'http://localhost:3000';
+        const catalogo = document.getElementById('catalogo');
+        const search = document.getElementById('search');
+        const itensCarrinho = document.getElementById('itens-carrinho');
+        const totalEl = document.getElementById('total');
+        const finalizarPedido = document.getElementById('finalizarPedido');
+        const formaPagamento = document.getElementById('formaPagamento');
+
+        let pizzas = [];
+        let carrinho = [];
+
+        async function carregarPizzas(){
+            const res = await fetch(`${API_BASE}/pizzas`);
+            pizzas = await res.json();
+            exibirPizzas(pizzas);
+        }
+
+        function exibirPizzas(listas){
+            catalogo.innerHTML = '';
+            lista.forEach(pizza => {
+            const card = document.createElement('div');
+            card.className = 'pizza-card';
+            card.innerHTML = `
+            <img src="/imagens/${pizza.imagem}" alt="${pizza.nome}" />
+            <h3>${pizza.nome}</h3>
+            <p>${pizza.ingredientes}</p>
+            <p>R$ ${pizza.preco.toFixed(2)}</p>
+            <button onclick="adicionarAoCarrinho(${pizza.id})">Adicionar</button>
+            `;
+            catalogo.appendChild(card);
+        });
+        }
+
+        function adicionarAoCarrinho(pizzaId){
+            const item = carrinho.find(i => i.pizza_id === pizzaId);
+            if (item) {
+                item.quantidade++;
+            } else {
+                carrinho.push({ pizza_id: pizzaId, quantidade: 1 });
+            }
+            atualizarCarrinho();
+        }
+
+        function atualizarCarrinho(){
+            itensCarrinho.innerHTML = '';
+            let total = 0;
+            carrinho.forEach(item => {
+                const pizza = pizzas.find(p => p.id === item.pizza_id);
+                const preco = pizza.preco * item.quantidade;
+                total += preco;
+                const li = document.createElement('li');
+                li.textContent = `${pizza.nome} x${item.quantidade} - R$ ${preco.toFixed(2)}`;
+                itensCarrinho.appendChild(li);
+            });
+            totalEl.textContent = total.toFixed(2);
+        }
+
+        finalizarPedido.addEventListener('click', async () => {
+        const telefone = prompt('Digite o telefone do cliente:');
+        const resCliente = await fetch(`${API_BASE}/clientes?telefone=${telefone}`);
+        const clientes = await resCliente.json();
+        if (!clientes.length) return alert('Cliente não encontrado.');
+
+        const cliente_id = clientes[0].id;
+        const itens = carrinho;
+        const forma_pagamento = formaPagamento.value;
+
+        const res = await fetch(`${API_BASE}/pedidos`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cliente_id, itens, forma_pagamento })
+        });
+
+        if (res.ok) {
+            alert('Pedido realizado com sucesso!');
+            carrinho = [];
+            atualizarCarrinho();
+        } else {
+            alert('Erro ao finalizar pedido.');
+        }
+    });
+
+    search.addEventListener('input', () => {
+      const termo = search.value.toLowerCase();
+      const filtradas = pizzas.filter(p => p.nome.toLowerCase().includes(termo));
+      exibirPizzas(filtradas);
+    });
+
+    window.adicionarAoCarrinho = adicionarAoCarrinho;
+    carregarPizzas();
+    </script>
+</body>
+</html>
